@@ -1,6 +1,6 @@
 # Mars Rover Proxy
 
-Mars Photo Gallery.
+Mars Photo Gallery. (This should typically be implemented as an Event-Driven Pipeline)
 
 #  Features!
 
@@ -39,7 +39,6 @@ Open a browser tab and go to https://localhost:5001/api/Photos
 #### Kubernetes + Google Cloud Or Azure
 
 ### Todos
-
  - Fix dates parsing
  - Write Unit Tests
  - Complete Front-End & API

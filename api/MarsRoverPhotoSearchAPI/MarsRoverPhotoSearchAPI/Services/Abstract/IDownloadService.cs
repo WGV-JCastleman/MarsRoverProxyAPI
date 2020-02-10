@@ -9,7 +9,7 @@ namespace MarsRoverPhotoSearchAPI.Services.Abstract
     public interface IDownloadService
     {
         Task GetBytes(List<Photo> photos);
-        Task<byte[]> GetFilesStream(string filePath);
+        Task<byte[]> GetFilesStream();
         Task ScheduleWork(string[] files);    
     }
 }

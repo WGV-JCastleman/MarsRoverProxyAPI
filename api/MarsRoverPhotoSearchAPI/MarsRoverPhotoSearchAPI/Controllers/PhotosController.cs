@@ -46,9 +46,15 @@ namespace MarsRoverPhotoSearchAPI.Controllers
         public async Task<ActionResult<string>> Get(string date, string camera, string rover = SupportedRovers.SPIRIT)
         {
             //read the dates file
+            string[] parseDates;
             string[] dates = System.IO.File.ReadAllLines("dates.txt");
-            await _downloadService.ScheduleWork(dates);
-            return "Pending";
+            var parsed = dates.TryParseAsNasaDates(out parseDates);
+            if(parsed)
+            {
+                await _downloadService.ScheduleWork(parseDates);
+                return Ok("Pending");
+            }
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
 
@@ -61,7 +67,7 @@ namespace MarsRoverPhotoSearchAPI.Controllers
         [Route("PhotoGallery")]
         [ProducesResponseType(StatusCodes.Status200OK)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<byte[]>> Gallery()
+        public Task<ActionResult<byte[]>> Gallery()
         {
             return null;
         }
