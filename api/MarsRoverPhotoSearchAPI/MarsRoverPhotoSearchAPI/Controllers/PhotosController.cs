@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MarsRoverPhotoSearchAPI.Helpers;
@@ -21,8 +22,6 @@ namespace MarsRoverPhotoSearchAPI.Controllers
         private readonly ILogger<PhotosController> _logger;
         private readonly IConfiguration _config;
         private readonly IDownloadService _downloadService;
-
-        private ApiProxyClient _httpProxyClient;
 
         public PhotosController(ILogger<PhotosController> logger, IConfiguration config, IDownloadService downloadService)
         {
@@ -60,15 +59,22 @@ namespace MarsRoverPhotoSearchAPI.Controllers
 
         /*
          * This endpoint continually picks up files (if not empty) and removes the filename from the queue, generate the bytes and 
-         * will send them to the client. The front will have a timer for this. 
+         * will send them to the client. The front will continually poll and have a timer for this. 
         */
         [HttpGet]
-        [Produces("application/json")]
-        [Route("PhotoGallery")]
+        [Route("Gallery")]
         [ProducesResponseType(StatusCodes.Status200OK)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public Task<ActionResult<byte[]>> Gallery()
+        public async Task<List<FileContentResult>> Gallery()
         {
+            var contentResultList = new List<FileContentResult>();
+            var imgBytes = await _downloadService.GetFilesStream();
+            if(imgBytes != null)
+            {
+                var result = File(imgBytes, "image/png");
+                contentResultList.Add(result);
+                return contentResultList;
+            }
             return null;
         }
     }

@@ -71,9 +71,5 @@ namespace MarsRoverPhotoSearchAPI.Services.Concrete
             }
         }
 
-        public Task<Stream> GetFilesStream(string filePath)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
