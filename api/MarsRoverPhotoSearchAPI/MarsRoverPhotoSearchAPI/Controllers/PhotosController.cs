@@ -34,6 +34,11 @@ namespace MarsRoverPhotoSearchAPI.Controllers
             _downloadService = downloadService;
         }
 
+
+        /*
+         * This endpoint just returns a status (Pending) and schedules work on the service side to start downloading
+         * the files asynchronously and add them the file name  to a queue object.
+        */
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -46,12 +51,17 @@ namespace MarsRoverPhotoSearchAPI.Controllers
             return "Pending";
         }
 
+
+        /*
+         * This endpoint continually picks up files (if not empty) and removes the filename from the queue, generate the bytes and 
+         * will send them to the client. The front will have a timer for this. 
+        */
         [HttpGet]
         [Produces("application/json")]
         [Route("PhotoGallery")]
         [ProducesResponseType(StatusCodes.Status200OK)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> PhotosGallery(string date, string camera, string rover = SupportedRovers.SPIRIT)
+        public async Task<ActionResult<byte[]>> Gallery()
         {
             return null;
         }
